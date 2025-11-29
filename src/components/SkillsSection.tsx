@@ -45,6 +45,7 @@ export function SkillsSection() {
   const skillRefs = useRef<HTMLDivElement[]>([]);
   const bodyRefs = useRef<any[]>([]);
   const [isDragging, setIsDragging] = useState<number | null>(null);
+  const [boxSize, setBoxSize] = useState({ w: 90, h: 100 });
 
   const draggingRef = useRef<{
     index: number;
@@ -192,14 +193,18 @@ export function SkillsSection() {
 
     const { Engine, Runner, Bodies, Composite, Events } = Matter;
 
-    const containerHeight = 500;
+    const rect = canvasContainerRef.current.getBoundingClientRect();
+    let containerHeight = rect.width < 640 ? 360 : 520;
 
     const engine = Engine.create({ gravity: { x: 0, y: 0.9 } });
     engineRef.current = engine;
 
     const wallThickness = 50;
-    const rect = canvasContainerRef.current.getBoundingClientRect();
     let containerWidth = rect.width;
+
+    const boxWidth = rect.width < 420 ? 70 : 90;
+    const boxHeight = rect.width < 420 ? 80 : 100;
+    setBoxSize({ w: boxWidth, h: boxHeight });
 
     const walls = [
       Bodies.rectangle(
@@ -227,8 +232,7 @@ export function SkillsSection() {
 
     Composite.add(engine.world, walls);
 
-    const boxWidth = 90;
-    const boxHeight = 100;
+    // boxWidth/boxHeight used to size Matter bodies
 
     const skillBodies: SkillBody[] = skills.map((skill, index) => {
       const cols = Math.max(1, Math.ceil(containerWidth / 120));
@@ -346,6 +350,12 @@ export function SkillsSection() {
       if (!canvasContainerRef.current) return;
       const newWidth = canvasContainerRef.current.clientWidth;
       containerWidth = newWidth;
+      // recompute container height and box sizes for responsive behavior
+      containerHeight = newWidth < 640 ? 360 : 520;
+      const newBoxWidth = newWidth < 420 ? 70 : 90;
+      const newBoxHeight = newWidth < 420 ? 80 : 100;
+      setBoxSize({ w: newBoxWidth, h: newBoxHeight });
+
       Matter.Body.setPosition(walls[2], {
         x: newWidth + wallThickness / 2,
         y: containerHeight / 2,
@@ -384,10 +394,7 @@ export function SkillsSection() {
           </p>
         </motion.div>
 
-        <div
-          className="relative w-full mx-auto"
-          style={{ height: '520px', maxWidth: '1100px' }}
-        >
+        <div className="relative w-full mx-auto h-[360px] md:h-[520px] max-w-[1100px]">
           <div
             aria-hidden
             className="absolute -inset-4 rounded-2xl pointer-events-none"
@@ -446,15 +453,15 @@ export function SkillsSection() {
                   className="absolute select-none"
                   onPointerDown={e => handlePointerDown(e, index)}
                   style={{
-                    left: 0,
-                    top: 0,
-                    width: 90,
-                    height: 100,
-                    transform: 'translate3d(-9999px,-9999px,0)',
-                    transition: 'transform 120ms linear',
-                    touchAction: 'none',
-                    zIndex: 10, // <- ABOVE THE CANVAS LAYER
-                  }}
+                      left: 0,
+                      top: 0,
+                      width: boxSize.w,
+                      height: boxSize.h,
+                      transform: 'translate3d(-9999px,-9999px,0)',
+                      transition: 'transform 120ms linear',
+                      touchAction: 'none',
+                      zIndex: 10, // <- ABOVE THE CANVAS LAYER
+                    }}
                 >
                   <div
                     className="w-full h-full rounded-xl flex flex-col items-center justify-center gap-1"

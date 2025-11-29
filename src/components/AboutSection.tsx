@@ -158,12 +158,12 @@ export function AboutSection() {
             className="mt-8 relative z-10"
           >
             {/* Marquee: duplicate highlights to create an infinite loop */}
-            <div className="marquee">
-              <motion.div className="marquee__inner" aria-hidden="false">
+            <div className="marquee overflow-x-auto">
+              <motion.div className="marquee__inner flex gap-4" aria-hidden="false">
                 {highlights.concat(highlights).map((item, idx) => (
                   <div
                     key={`${item.title}-${idx}`}
-                    className="glass-card flex-shrink-0 p-4 rounded-2xl hover-glow min-w-[220px] max-w-[260px]"
+                    className="glass-card flex-shrink-0 p-4 rounded-2xl hover-glow min-w-[160px] sm:min-w-[220px] max-w-[260px]"
                   >
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">

@@ -81,11 +81,27 @@ export function HeroSection() {
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="flex gap-4 mt-8 md:mt-10">
-              <motion.a href="#projects" className="px-8 py-3 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold hover-glow glow-border transition-all duration-300" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="flex flex-col sm:flex-row gap-4 mt-8 md:mt-10 w-full"
+            >
+              <motion.a
+                href="#projects"
+                className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold hover-glow glow-border transition-all duration-300"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
                 View Projects
               </motion.a>
-              <motion.a href="#contact" className="px-8 py-3 rounded-full border border-primary/40 text-primary font-semibold hover:bg-primary/10 transition-all duration-300" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+
+              <motion.a
+                href="#contact"
+                className="w-full sm:w-auto text-center px-6 py-3 rounded-full border border-primary/40 text-primary font-semibold hover:bg-primary/10 transition-all duration-300"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
                 Contact Me
               </motion.a>
             </motion.div>
@@ -95,7 +111,7 @@ export function HeroSection() {
           <div className="w-full md:w-1/2 flex items-center justify-center md:justify-end">
             <motion.div initial={{ scale: 0.8, rotate: -10 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 90, delay: 0.2 }} className="relative">
               <div className="avatar-ring p-2 rounded-full"> 
-                <div className="avatar-inner w-48 h-48 md:w-80 md:h-80 lg:w-[420px] lg:h-[420px] rounded-full overflow-hidden">
+                <div className="avatar-inner w-36 h-36 md:w-72 md:h-72 lg:w-[420px] lg:h-[420px] rounded-full overflow-hidden">
                   <img src={avatarImage} alt="Tridip Samanta" className="w-full h-full object-cover" />
                 </div>
               </div>
