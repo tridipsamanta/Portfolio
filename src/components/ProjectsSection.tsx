@@ -1,23 +1,16 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { ExternalLink, Sparkles } from 'lucide-react';
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from '@/components/ui/dialog';
 
 import projectSwachhSetu from '@/assets/project-swachh-setu.jpg';
 import projectPrism from '@/assets/project-prism.jpg';
 import projectMargAI from '@/assets/project-margai.jpg';
 import projectGurukul from '@/assets/project-gurukul.jpg';
 import projectSamantaAI from '@/assets/project-samanta-ai.jpg';
+import resultAnalyzerImg from '@/assets/result-analyzer.png';
+import polyMathImg from '@/assets/poly-math.png';
+import smartSpendImg from '@/assets/SmartSpend.jpeg';
 
 const projects = [
   {
@@ -55,7 +48,7 @@ const projects = [
   {
     title: 'Samanta AI',
     description: 'Your smartest chat partner. An AI-powered chatbot application with intuitive interface and smart responses.',
-    url: '#',
+    url: 'https://poly-math-mu.vercel.app/',
     tags: ['AI', 'Chatbot', 'React'],
     type: 'ai',
     featured: true,
@@ -63,9 +56,38 @@ const projects = [
   },
 ];
 
+const moreProjects = [
+  {
+    title: 'Result Analyzer',
+    description: 'Analyze academic results with clear insights and visuals.',
+    url: 'https://result-analyzer-one.vercel.app/',
+    tags: ['React', 'Dashboard', 'Data'],
+    image: resultAnalyzerImg,
+    featured: false,
+  },
+  {
+    title: 'Polymath',
+    description: 'A handy math toolkit for quick calculations and visualizations.',
+    url: 'https://poly-math-mu.vercel.app/',
+    tags: ['React', 'Utility', 'Math'],
+    image: polyMathImg,
+    featured: false,
+  },
+  {
+    title: 'SmartSpend',
+    description: 'Track expenses and budgets with a clean mobile UI.',
+    url: '/SmartSpend.apk',
+    tags: ['React Native', 'Android', 'APK'],
+    image: smartSpendImg,
+    featured: false,
+  },
+];
+
 export function ProjectsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [showMore, setShowMore] = useState(false);
+  const visibleProjects = showMore ? [...projects, ...moreProjects] : projects;
 
   return (
     <section id="projects" className="section-padding relative" ref={ref}>
@@ -86,7 +108,7 @@ export function ProjectsSection() {
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, index) => (
+          {visibleProjects.map((project, index) => (
             <motion.div
               key={project.title}
               initial={{ opacity: 0, y: 50 }}
@@ -137,11 +159,12 @@ export function ProjectsSection() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-sm font-medium"
+                    download={project.url.endsWith('.apk')}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <ExternalLink size={14} />
-                    Live Demo
+                    {project.url.endsWith('.apk') ? 'Download APK' : 'Live Demo'}
                   </motion.a>
                 </div>
               </div>
@@ -149,40 +172,15 @@ export function ProjectsSection() {
           ))}
         </div>
         <div className="mt-8 flex justify-center">
-          <Dialog>
-            <DialogTrigger asChild>
-              <motion.button
-                type="button"
-                className="px-8 py-3 rounded-full border border-primary/40 text-primary font-semibold hover:bg-primary/10 transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                View More Projects
-              </motion.button>
-            </DialogTrigger>
-
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>New projects are coming soon</DialogTitle>
-                <DialogDescription>
-                  I'm working on several exciting projects — they will be showcased here soon. Sign up or check back later to see the latest work.
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="py-4 flex items-center justify-center">
-                <svg width="140" height="140" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <rect x="1" y="3" width="22" height="14" rx="2" fill="#0EA5A4" opacity="0.08" />
-                  <path d="M3 7h18M7 11h10M7 15h4" stroke="#0EA5A4" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-
-              <DialogFooter>
-                <DialogClose asChild>
-                  <button className="px-4 py-2 rounded-md bg-primary text-background font-medium">OK</button>
-                </DialogClose>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <motion.button
+            type="button"
+            className="px-8 py-3 rounded-full border border-primary/40 text-primary font-semibold hover:bg-primary/10 transition-all duration-300"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowMore((v) => !v)}
+          >
+            {showMore ? 'Show Less' : 'View More Projects'}
+          </motion.button>
         </div>
       </div>
     </section>
